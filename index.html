@@ -3,225 +3,240 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0c0d0f">
+<meta name="theme-color" content="#0b0c0e">
+<meta name="color-scheme" content="dark light">
+
 <title>for your eyes only</title>
+<meta name="description" content="open when youre ready">
+
+<!-- Telegram / Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="for your eyes only">
+<meta property="og:title" content="for your eyes only">
+<meta property="og:description" content="open when youre ready">
+<meta property="og:image" content="og-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<!-- Twitter/X fallback -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="for your eyes only">
+<meta name="twitter:description" content="open when youre ready">
+<meta name="twitter:image" content="og-preview.png">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%230c0d0f%22/><path d=%22M10 18h44v28H10z%22 fill=%22%23d8cdbd%22/><path d=%22M10 18l22 17 22-17%22 fill=%22none%22 stroke=%22%237b3d45%22 stroke-width=%224%22/></svg>">
+
 <style>
 :root{
-  --bg:#0c0d0f; --bg2:#15171a;
-  --paper:#f2ede4; --paper2:#e8dfd1;
-  --ink:#252321; --muted:#81786f;
-  --wine:#773d45; --gold:#8f806d;
+  --bg:#0b0c0e; --bg2:#15171a; --paper:#f2ede5; --paper2:#e7ddcf;
+  --ink:#252321; --copy:#393430; --muted:#8b837a; --wine:#773d45;
+  --line:rgba(255,255,255,.11);
   --serif:"Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
   --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   --hand:"Bradley Hand","Segoe Print","Comic Sans MS",cursive;
 }
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;background:var(--bg);font-family:var(--sans);overflow:hidden}
-button{font:inherit}
-.hidden{display:none!important}
-body:before{
-  content:"";position:fixed;inset:0;z-index:1000;pointer-events:none;opacity:.13;
-  background-image:repeating-radial-gradient(circle at 0 0,rgba(255,255,255,.1) 0 1px,transparent 1px 4px);
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:var(--sans)}
+body::after{
+  content:"";position:fixed;inset:0;z-index:500;pointer-events:none;opacity:.12;
+  background-image:repeating-radial-gradient(circle at 0 0,rgba(255,255,255,.09) 0 1px,transparent 1px 4px);
   mix-blend-mode:soft-light
 }
+button{font:inherit}.hidden{display:none!important}
 
-/* INTRO */
-.intro,.envelope-stage{
-  position:fixed;inset:0;display:grid;place-items:center;padding:24px;
+/* intro */
+.intro,.envelope-stage,.closing{
+  position:fixed;inset:0;display:grid;place-items:center;padding:22px;color:#f4f0e9;
   background:
-    radial-gradient(circle at 50% 24%,rgba(95,70,75,.16),transparent 34%),
-    radial-gradient(circle at 50% 100%,#17191d,#0b0c0e 65%);
-  color:#f3efe8;z-index:50
+    radial-gradient(circle at 50% 24%,rgba(109,63,70,.14),transparent 31%),
+    radial-gradient(circle at 50% 100%,#17191d,#090a0c 67%);
 }
-.intro-inner{text-align:center}
-.eyebrow{font-size:10px;letter-spacing:.31em;text-transform:uppercase;color:#81858b;margin-bottom:23px}
-.intro h1{font:400 clamp(48px,9vw,100px)/.93 var(--serif);letter-spacing:-.045em;margin:0}
-.intro p{color:#9f9b96;font-size:14px;margin:24px 0 34px}
+.intro{z-index:90}
+.intro-inner{text-align:center;animation:introIn 1s both}
+.overline{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:#7f8388;margin-bottom:24px}
+.hero{font:400 clamp(50px,9vw,106px)/.92 var(--serif);letter-spacing:-.05em;margin:0}
+.intro p{margin:24px 0 36px;color:#a5a09a;font-size:14px}
 .dark-btn{
-  border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.035);color:white;
-  border-radius:999px;padding:13px 24px;cursor:pointer;transition:.25s
+  border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.035);color:#f5f1ea;
+  border-radius:999px;padding:13px 23px;cursor:pointer;transition:.25s ease;backdrop-filter:blur(12px)
 }
-.dark-btn:hover{transform:translateY(-2px);background:rgba(255,255,255,.075)}
+.dark-btn:hover{transform:translateY(-2px);background:rgba(255,255,255,.07)}
 
-/* ENVELOPE */
-.envelope-wrap{width:min(88vw,560px);aspect-ratio:1.5;position:relative;perspective:1200px}
-.envelope{position:absolute;inset:0;border-radius:12px;background:#cfc2b0;cursor:pointer;transform-style:preserve-3d;
-filter:drop-shadow(0 32px 50px rgba(0,0,0,.42))}
-.envelope:before{
-  content:"";position:absolute;inset:0;border-radius:12px;
-  background:linear-gradient(145deg,#dbd1c2,#c7baa7);
-  clip-path:polygon(0 0,50% 60%,100% 0,100% 100%,0 100%);z-index:2
+/* envelope */
+.envelope-stage{z-index:80;perspective:1600px;transition:opacity .7s ease}
+.envelope-wrap{width:min(88vw,570px);aspect-ratio:1.5;position:relative;transform-style:preserve-3d}
+.envelope{
+  position:absolute;inset:0;border-radius:13px;background:#cabba8;cursor:pointer;transform-style:preserve-3d;
+  filter:drop-shadow(0 34px 64px rgba(0,0,0,.46))
 }
-.envelope:after{
-  content:"";position:absolute;inset:0;border-radius:12px;
-  background:linear-gradient(180deg,#d5c8b6,#b9aa97);
-  clip-path:polygon(0 100%,50% 42%,100% 100%);z-index:4
+.envelope::before{
+  content:"";position:absolute;inset:0;border-radius:13px;background:linear-gradient(145deg,#ddd2c1,#c6b7a4);
+  clip-path:polygon(0 0,50% 61%,100% 0,100% 100%,0 100%);z-index:2
+}
+.envelope::after{
+  content:"";position:absolute;inset:0;border-radius:13px;background:linear-gradient(180deg,#d4c6b3,#b8a893);
+  clip-path:polygon(0 100%,50% 43%,100% 100%);z-index:4
 }
 .flap{
-  position:absolute;left:0;right:0;top:0;height:58%;
-  background:linear-gradient(180deg,#e5dccf,#cec0ad);
-  clip-path:polygon(0 0,100% 0,50% 100%);
-  transform-origin:top;transition:1.05s cubic-bezier(.2,.7,.05,1);z-index:7;backface-visibility:hidden
+  position:absolute;left:0;right:0;top:0;height:59%;background:linear-gradient(180deg,#e8dfd2,#cdbda9);
+  clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;z-index:7;
+  transition:transform 1.05s cubic-bezier(.2,.75,.05,1);backface-visibility:hidden
 }
 .seal{
-  position:absolute;left:50%;top:51%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;z-index:8;
-  display:grid;place-items:center;background:radial-gradient(circle at 35% 28%,#9f5c64 0 15%,transparent 16%),radial-gradient(circle,#7a3640 0 58%,#58242b 60%);
-  color:#e8c7c1;font:26px var(--serif);transition:.45s
+  position:absolute;left:50%;top:51%;transform:translate(-50%,-50%);width:66px;height:66px;border-radius:50%;z-index:8;
+  display:grid;place-items:center;background:radial-gradient(circle at 35% 28%,#a05d65 0 15%,transparent 16%),radial-gradient(circle,#7a3640 0 58%,#57232a 60%);
+  color:#ecc9c3;font:26px var(--serif);transition:.45s
 }
-.peek{position:absolute;left:8%;right:8%;top:8%;height:84%;background:var(--paper);border-radius:7px;z-index:1;
-  padding:34px;color:var(--ink);font:27px var(--serif);transition:1.2s cubic-bezier(.2,.75,.05,1);box-shadow:0 20px 30px rgba(0,0,0,.22)}
-.to{position:absolute;left:50%;top:67%;transform:translateX(-50%);z-index:6;color:#5e554c;font:italic 26px var(--serif)}
+.peek{
+  position:absolute;left:7.5%;right:7.5%;top:8%;height:85%;background:var(--paper);border-radius:8px;z-index:1;
+  color:var(--ink);padding:35px;font:28px var(--serif);box-shadow:0 22px 34px rgba(0,0,0,.24);
+  transition:transform 1.25s cubic-bezier(.18,.78,.06,1), opacity .5s
+}
+.to{position:absolute;left:50%;top:67%;transform:translateX(-50%);z-index:6;color:#5d544a;font:italic 26px var(--serif)}
+.hint{position:absolute;bottom:7vh;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#72767b}
 .envelope.open .flap{transform:rotateX(180deg)}
 .envelope.open .seal{opacity:0;transform:translate(-50%,-80%) scale(.72)}
-.envelope.open .peek{transform:translateY(-73%);z-index:5}
-.hint{position:absolute;bottom:7vh;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#6f747a}
+.envelope.open .peek{transform:translateY(-77%);z-index:5}
 
-/* STORY */
-.story{position:fixed;inset:0;background:#0b0c0e;z-index:10}
-.story-track{
-  width:100%;height:100%;display:flex;overflow-x:auto;overflow-y:hidden;
-  scroll-snap-type:x mandatory;scroll-behavior:smooth;
-  -webkit-overflow-scrolling:touch;scrollbar-width:none
+/* morphing paper transition */
+.flying-letter{
+  position:fixed;z-index:86;background:var(--paper);color:var(--ink);border-radius:10px;
+  box-shadow:0 38px 80px rgba(0,0,0,.45);pointer-events:none;opacity:0;
+  transition:all 1.05s cubic-bezier(.18,.78,.08,1)
 }
-.story-track::-webkit-scrollbar{display:none}
+.flying-letter.show{opacity:1}
+
+/* story */
+.story{position:fixed;inset:0;background:#090a0c;z-index:20}
+.track{
+  width:100%;height:100%;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain
+}
+.track::-webkit-scrollbar{display:none}
 .page{
-  flex:0 0 100vw;height:100%;scroll-snap-align:start;position:relative;
-  display:grid;place-items:center;padding:clamp(18px,4vw,56px);overflow:hidden
+  flex:0 0 100vw;height:100%;scroll-snap-align:start;display:grid;place-items:center;
+  padding:clamp(16px,4vw,52px);position:relative;overflow:hidden
 }
 .paper{
-  width:min(92vw,920px);height:min(88vh,780px);position:relative;overflow:hidden;
-  background:linear-gradient(rgba(255,255,255,.22),rgba(255,255,255,.04)),var(--paper);
-  color:var(--ink);border-radius:18px;box-shadow:0 45px 100px rgba(0,0,0,.48);
-  padding:clamp(30px,6vw,78px)
+  width:min(92vw,930px);height:min(88vh,790px);background:linear-gradient(rgba(255,255,255,.22),rgba(255,255,255,.04)),var(--paper);
+  color:var(--ink);border-radius:18px;box-shadow:0 45px 110px rgba(0,0,0,.5);padding:clamp(30px,6vw,80px);
+  position:relative;overflow:hidden
 }
-.paper:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.18;
-background-image:repeating-linear-gradient(0deg,rgba(70,52,34,.03) 0 1px,transparent 1px 4px)}
+.paper::after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.18;
+  background-image:repeating-linear-gradient(0deg,rgba(70,52,34,.03) 0 1px,transparent 1px 4px)
+}
 .content{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:center}
-.serif{font-family:var(--serif)}
-.big{font:400 clamp(45px,8vw,92px)/.95 var(--serif);letter-spacing:-.045em;margin:0}
-.medium{font:400 clamp(31px,5vw,58px)/1.08 var(--serif);letter-spacing:-.03em;margin:0}
-.lead{font:400 clamp(21px,3.2vw,34px)/1.24 var(--serif);margin:22px 0 0;max-width:760px}
-.copy{font-size:clamp(15px,1.75vw,20px);line-height:1.72;max-width:720px;color:#37322f;margin:0 0 22px}
-.quote{font:italic 400 clamp(30px,5vw,58px)/1.08 var(--serif);letter-spacing:-.03em;color:var(--wine);margin:26px 0;max-width:770px}
-.hand{font:clamp(19px,2.7vw,29px)/1.45 var(--hand);color:#5c4043}
-.muted{color:#8c847b}
+.big{font:400 clamp(47px,8vw,94px)/.95 var(--serif);letter-spacing:-.047em;margin:0}
+.med{font:400 clamp(31px,5vw,59px)/1.08 var(--serif);letter-spacing:-.03em;margin:0}
+.lead{font:400 clamp(21px,3.2vw,34px)/1.25 var(--serif);margin:22px 0 0;max-width:760px}
+.copy{font-size:clamp(15px,1.75vw,20px);line-height:1.7;max-width:730px;color:var(--copy);margin:0 0 22px}
+.quote{font:italic 400 clamp(30px,5vw,58px)/1.08 var(--serif);letter-spacing:-.03em;color:var(--wine);margin:28px 0;max-width:780px}
+.hand{font:clamp(19px,2.7vw,29px)/1.42 var(--hand);color:#5b4043}
+.muted{color:#8c847a}
 
-/* unique page interactions */
-.reveal-lines .line{opacity:0;transform:translateY(16px);transition:.7s ease}
-.page.active .reveal-lines .line:nth-child(1){opacity:1;transform:none;transition-delay:.15s}
-.page.active .reveal-lines .line:nth-child(2){opacity:1;transform:none;transition-delay:.55s}
-.page.active .reveal-lines .line:nth-child(3){opacity:1;transform:none;transition-delay:.95s}
+/* reveal */
+.reveal .r{opacity:0;transform:translateY(18px);transition:.75s ease}
+.page.active .reveal .r:nth-child(1){opacity:1;transform:none;transition-delay:.12s}
+.page.active .reveal .r:nth-child(2){opacity:1;transform:none;transition-delay:.52s}
+.page.active .reveal .r:nth-child(3){opacity:1;transform:none;transition-delay:.92s}
+.fade{opacity:0;transform:translateY(18px)}
+.page.active .fade{animation:fadeUp .8s both}.page.active .d1{animation-delay:.32s}.page.active .d2{animation-delay:.68s}
+.note{position:absolute;right:6%;top:14%;font:23px var(--hand);color:var(--wine);transform:rotate(-5deg) translateY(12px);opacity:0;transition:.9s .55s}
+.page.active .note{opacity:.8;transform:rotate(-5deg)}
+.dark-page{background:radial-gradient(circle at 50% 44%,#202126,#090a0c 70%);color:#f5efe8}
+.dark-page .paper{background:transparent;box-shadow:none;color:#f5efe8}.dark-page .copy{color:#bbb5ae}.dark-page .quote{color:#d8b8b6}
+.ghostword{position:absolute;font:italic clamp(66px,16vw,190px)/1 var(--serif);color:rgba(255,255,255,.035);white-space:nowrap;animation:float 8s ease-in-out infinite}
 
-.page.active .fade-up{animation:fadeUp .85s both}
-.page.active .delay1{animation-delay:.35s}.page.active .delay2{animation-delay:.75s}
-
-.note{
-  position:absolute;right:6%;top:14%;font:23px var(--hand);color:var(--wine);
-  transform:rotate(-5deg) translateY(12px);opacity:0;transition:.9s .6s
-}
-.page.active .note{opacity:.78;transform:rotate(-5deg) translateY(0)}
-
-.dark-page{background:radial-gradient(circle at 50% 45%,#202126,#0a0b0d 70%);color:#f5efe7}
-.dark-page .paper{background:transparent;box-shadow:none;color:#f5efe7}
-.dark-page .copy{color:#bcb6af}.dark-page .quote{color:#d8b9b7}
-
-.float-word{
-  position:absolute;font:italic clamp(56px,14vw,160px)/1 var(--serif);color:rgba(255,255,255,.035);
-  white-space:nowrap;animation:float 9s ease-in-out infinite
-}
-
-.flip-card{perspective:1200px;width:min(100%,720px);height:min(56vh,470px);cursor:pointer;margin:auto}
+/* interactions */
+.flip{perspective:1200px;width:min(100%,720px);height:min(56vh,470px);cursor:pointer;margin:auto}
 .flip-inner{position:relative;width:100%;height:100%;transition:transform .85s cubic-bezier(.2,.7,.1,1);transform-style:preserve-3d}
-.flip-card.flipped .flip-inner{transform:rotateY(180deg)}
-.flip-face{
-  position:absolute;inset:0;backface-visibility:hidden;border:1px solid rgba(0,0,0,.08);
-  border-radius:18px;background:#ede6da;padding:clamp(30px,6vw,64px);display:flex;flex-direction:column;justify-content:center;
-  box-shadow:0 28px 60px rgba(0,0,0,.14)
+.flip.flipped .flip-inner{transform:rotateY(180deg)}
+.face{
+  position:absolute;inset:0;backface-visibility:hidden;border:1px solid rgba(0,0,0,.08);border-radius:18px;background:#ede5d9;
+  padding:clamp(30px,6vw,64px);display:flex;flex-direction:column;justify-content:center;box-shadow:0 28px 60px rgba(0,0,0,.14)
 }
-.flip-back{transform:rotateY(180deg);background:#e5dacb}
-.tap-small{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#8c8178;margin-top:24px}
+.face.back{transform:rotateY(180deg);background:#e5dacb}
+.micro{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#8d8379;margin-top:24px}
 
-.pull-wrap{position:relative;max-width:720px}
-.pull-tab{
-  border:0;background:transparent;color:var(--wine);font:italic 400 clamp(32px,5vw,56px) var(--serif);
-  cursor:pointer;padding:0;text-align:left
+.reveal-thought button{
+  border:0;background:none;padding:0;text-align:left;cursor:pointer;color:var(--wine);
+  font:italic clamp(31px,5vw,55px)/1.08 var(--serif)
 }
-.hidden-thought{
-  max-height:0;overflow:hidden;opacity:0;transition:max-height .9s ease,opacity .8s ease,margin .8s ease;
-  font-size:clamp(15px,1.75vw,20px);line-height:1.7;color:#403936
-}
-.pull-wrap.open .hidden-thought{max-height:260px;opacity:1;margin-top:24px}
+.thought{max-height:0;overflow:hidden;opacity:0;transition:.85s ease;font-size:clamp(15px,1.75vw,20px);line-height:1.7;color:#403936}
+.reveal-thought.open .thought{max-height:290px;opacity:1;margin-top:24px}
 
-.stack{position:relative;width:min(100%,720px);height:410px;margin:auto}
-.stack-card{
+.stack{position:relative;width:min(100%,720px);height:min(58vh,430px);margin:auto}
+.card{
   position:absolute;inset:0;border-radius:18px;padding:clamp(28px,6vw,58px);background:#eee7dc;
-  box-shadow:0 24px 50px rgba(0,0,0,.14);transition:.7s cubic-bezier(.2,.7,.1,1);
-  display:flex;flex-direction:column;justify-content:center;cursor:pointer
+  box-shadow:0 24px 50px rgba(0,0,0,.14);transition:.7s cubic-bezier(.2,.7,.1,1);display:flex;flex-direction:column;justify-content:center;cursor:pointer
 }
-.stack-card:nth-child(1){transform:rotate(-3deg) translate(-13px,8px)}
-.stack-card:nth-child(2){transform:rotate(2.5deg) translate(10px,4px)}
-.stack-card:nth-child(3){transform:rotate(0)}
-.stack.next .stack-card:nth-child(3){transform:translateX(-115%) rotate(-12deg);opacity:0}
-.stack.next .stack-card:nth-child(2){transform:rotate(0)}
-.stack.next2 .stack-card:nth-child(2){transform:translateX(115%) rotate(12deg);opacity:0}
-.stack.next2 .stack-card:nth-child(1){transform:rotate(0) translate(0,0)}
+.card:nth-child(1){transform:rotate(-3deg) translate(-13px,8px)}
+.card:nth-child(2){transform:rotate(2.5deg) translate(10px,4px)}
+.card:nth-child(3){transform:rotate(0)}
+.stack.one .card:nth-child(3){transform:translateX(-115%) rotate(-12deg);opacity:0}
+.stack.one .card:nth-child(2){transform:rotate(0)}
+.stack.two .card:nth-child(2){transform:translateX(115%) rotate(12deg);opacity:0}
+.stack.two .card:nth-child(1){transform:rotate(0) translate(0,0)}
 
-.final-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
-.paper-btn{border:1px solid rgba(0,0,0,.16);background:rgba(255,255,255,.28);color:var(--ink);
-border-radius:999px;padding:13px 19px;cursor:pointer}
-.paper-btn.primary{background:#272421;color:#f5eee5;border-color:#272421}
+.hold-zone{display:flex;align-items:center;gap:16px;margin-top:28px}
+.hold{
+  width:62px;height:62px;border-radius:50%;border:1px solid rgba(0,0,0,.18);background:transparent;cursor:pointer;position:relative
+}
+.hold::before{
+  content:"";position:absolute;inset:6px;border-radius:50%;background:conic-gradient(var(--wine) var(--p,0%),rgba(0,0,0,.08) 0)
+}
+.hold::after{content:"hold";position:absolute;inset:10px;border-radius:50%;background:var(--paper);display:grid;place-items:center;font-size:10px;color:#71675f}
+.hold-result{opacity:.2;filter:blur(3px);transition:.7s}.hold-result.ready{opacity:1;filter:none}
 
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.paper-btn{border:1px solid rgba(0,0,0,.16);background:rgba(255,255,255,.3);color:var(--ink);border-radius:999px;padding:13px 19px;cursor:pointer;transition:.25s}
+.paper-btn:hover{transform:translateY(-2px)}.paper-btn.primary{background:#272421;color:#f6eee5;border-color:#272421}
+
+/* controls */
 .nav{
-  position:fixed;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);
-  z-index:30;display:flex;align-items:center;gap:14px;padding:8px 11px;border-radius:999px;
-  background:rgba(17,18,21,.58);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.08)
+  position:fixed;z-index:40;left:50%;bottom:max(13px,env(safe-area-inset-bottom));transform:translateX(-50%);
+  display:flex;align-items:center;gap:13px;padding:8px 11px;border-radius:999px;background:rgba(17,18,21,.58);
+  border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(18px)
 }
-.nav button{border:0;background:transparent;color:#d8d5cf;cursor:pointer;width:28px;height:28px;font-size:20px}
-.dots{display:flex;gap:6px}
-.dot{width:5px;height:5px;border-radius:50%;background:#5f6267;transition:.3s}
-.dot.active{width:18px;border-radius:999px;background:#d1c5b9}
-
-.swipe-tip{
-  position:fixed;right:18px;top:18px;z-index:31;color:#777b80;font-size:10px;letter-spacing:.18em;text-transform:uppercase
-}
+.nav button{border:0;background:none;color:#d6d2cc;cursor:pointer;width:28px;height:28px;font-size:20px}
+.dots{display:flex;gap:6px}.dot{width:5px;height:5px;border-radius:99px;background:#5c6065;transition:.3s}.dot.active{width:18px;background:#d1c4b8}
+.swipe-tip{position:fixed;right:18px;top:18px;z-index:41;color:#72767b;font-size:10px;letter-spacing:.18em;text-transform:uppercase}
 
 /* closing */
-.closed{position:fixed;inset:0;z-index:100;background:radial-gradient(circle,#1d1f22,#090a0c 68%);display:grid;place-items:center;
-color:white;opacity:0;visibility:hidden;transition:.8s}
-.closed.show{opacity:1;visibility:visible}
-.closed div{text-align:center}
-.closed p{font:400 clamp(40px,8vw,90px)/.95 var(--serif);letter-spacing:-.04em;margin:0 0 30px}
+.closing{z-index:120;opacity:0;visibility:hidden;transition:.8s}
+.closing.show{opacity:1;visibility:visible}
+.closing div{text-align:center}.closing p{font:400 clamp(42px,8vw,92px)/.95 var(--serif);letter-spacing:-.045em;margin:0 0 30px}
 
-/* Print */
+/* print */
 #print-letter{display:none}
 @media print{
  @page{size:A4;margin:18mm}
  html,body{overflow:visible!important;background:white!important;height:auto!important}
- body:before,.intro,.envelope-stage,.story,.nav,.swipe-tip,.closed{display:none!important}
- #print-letter{display:block!important;color:#222;font:11.4pt/1.58 Georgia,serif}
+ body::after,.intro,.envelope-stage,.story,.nav,.swipe-tip,.closing,.flying-letter{display:none!important}
+ #print-letter{display:block!important;color:#222;font:11.3pt/1.58 Georgia,serif}
  #print-letter .meta{font:8.5pt Arial,sans-serif;text-transform:uppercase;letter-spacing:.14em;color:#777;border-bottom:1px solid #ddd;padding-bottom:4mm;margin-bottom:8mm}
  #print-letter h1{font:26pt Georgia,serif;margin:0 0 8mm}
  #print-letter p{margin:0 0 5mm;break-inside:avoid}
  #print-letter .end{margin-top:9mm;font-style:italic;font-size:13pt}
 }
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-@keyframes float{50%{transform:translateY(-20px) translateX(15px)}}
+@keyframes introIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes float{50%{transform:translate(18px,-16px)}}
 @media(max-width:700px){
  .paper{width:94vw;height:86vh;border-radius:13px;padding:30px 24px}
- .copy{line-height:1.58}
- .note{position:static;margin:18px 0 0;transform:rotate(-3deg)!important}
- .stack{height:55vh}
- .swipe-tip{display:none}
+ .copy{line-height:1.58}.note{position:static;margin-top:18px;transform:rotate(-3deg)!important}
+ .swipe-tip{display:none}.stack{height:56vh}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
-<body>
 
+<body>
 <section class="intro" id="intro">
   <div class="intro-inner">
-    <div class="eyebrow">private correspondence</div>
-    <h1>for your eyes only</h1>
+    <div class="overline">private correspondence</div>
+    <h1 class="hero">for your eyes only</h1>
     <p>open when youre ready</p>
     <button class="dark-btn" id="introBtn">open</button>
   </div>
@@ -229,184 +244,169 @@ color:white;opacity:0;visibility:hidden;transition:.8s}
 
 <section class="envelope-stage hidden" id="envStage">
   <div class="envelope-wrap">
-    <div class="envelope" id="envelope" tabindex="0">
+    <div class="envelope" id="envelope" tabindex="0" aria-label="open the letter">
       <div class="peek">hey my love</div>
-      <div class="flap"></div><div class="seal">k</div><div class="to">to you</div>
+      <div class="flap"></div>
+      <div class="seal">k</div>
+      <div class="to">to you</div>
     </div>
   </div>
   <div class="hint">tap the seal</div>
 </section>
 
+<div class="flying-letter" id="flying"></div>
+
 <section class="story hidden" id="story">
-  <div class="story-track" id="track">
+<div class="track" id="track">
 
-    <section class="page active">
-      <div class="paper">
-        <div class="content reveal-lines">
-          <h2 class="big line">hey my love</h2>
-          <p class="lead line">i dont regret meeting you</p>
-          <p class="lead line muted">and i dont regret that what we had was real</p>
+<section class="page active">
+  <div class="paper"><div class="content reveal">
+    <h2 class="big r">hey my love</h2>
+    <p class="lead r">i dont regret meeting you</p>
+    <p class="lead muted r">and i dont regret that what we had was real</p>
+  </div></div>
+</section>
+
+<section class="page">
+  <div class="paper"><div class="content">
+    <p class="copy fade">honestly i want to say that at least for now i dont regret that things between us happened the way they did and i definitely will never regret meeting you because everything we had was real</p>
+    <p class="copy fade d1">now that youve come here i hope you understand my feelings at least a little better and judge me a little less for the decisions i made because they really werent easy for me either</p>
+    <p class="quote fade d2">i do care about you<br>probably the opposite actually</p>
+  </div></div>
+</section>
+
+<section class="page">
+  <div class="paper"><div class="content">
+    <p class="copy">sometimes i think i was even intentionally trying to hurt you a little so it would be easier for you to hate me stop waiting for me and stop wanting to come back</p>
+    <p class="copy">and no i obviously dont actually have some huge harem and im not fucking everyone around me while your photo is still hanging on my fridge</p>
+    <p class="copy">and when i said its none of your business it didnt necessarily mean the worst thing you could imagine</p>
+    <div class="note">yeah i know<br>not my proudest moment</div>
+  </div></div>
+</section>
+
+<section class="page dark-page">
+  <div class="ghostword">maybe</div>
+  <div class="paper"><div class="content">
+    <h2 class="big fade">maybe one day<br>maybe never</h2>
+    <p class="copy fade d1">we have absolutely no idea whats going to happen next maybe in a month ill come crawling back to you or maybe well never be together again i dont think theres any point trying to decide that right now</p>
+    <p class="quote fade d2">if you ever genuinely need me ill be here</p>
+  </div></div>
+</section>
+
+<section class="page">
+  <div class="paper"><div class="content reveal-thought" id="thoughtBox">
+    <p class="copy">i hope that one day youll be able to forgive me for all of this and understand why i acted the way i did</p>
+    <p class="copy">im glad you came after all even though now i feel like my emotional state is about to be completely fucked ahaha</p>
+    <button id="thoughtBtn">and about you finding someone better…</button>
+    <div class="thought">i still have this defense mechanism where i joke that youll find someone better and i think ill keep saying that for a long time even though somewhere deep inside there will obviously always be this small selfish part of me hoping you wont ahaha the part that wants to always remain someone special in your life</div>
+  </div></div>
+</section>
+
+<section class="page">
+  <div class="paper"><div class="content">
+    <div class="flip" id="flip">
+      <div class="flip-inner">
+        <div class="face">
+          <p class="quote">you deserve every good thing in this world</p>
+          <div class="micro">tap this card</div>
+        </div>
+        <div class="face back">
+          <p class="lead">because i dont think anyone has ever loved me the way you do</p>
+          <p class="copy" style="margin-top:24px">now you just need to learn how to give at least some of that love to yourself</p>
         </div>
       </div>
-    </section>
+    </div>
+  </div></div>
+</section>
 
-    <section class="page">
-      <div class="paper">
-        <div class="content">
-          <p class="copy fade-up">honestly i want to say that at least for now i dont regret that things between us happened the way they did and i definitely will never regret meeting you because everything we had was real</p>
-          <p class="copy fade-up delay1">now that youve come here i hope you understand my feelings at least a little better and judge me a little less for the decisions i made because they really werent easy for me either</p>
-          <p class="quote fade-up delay2">i do care about you<br>probably the opposite actually</p>
-        </div>
-      </div>
-    </section>
+<section class="page">
+  <div class="paper"><div class="content">
+    <p class="copy">maybe one day well find ourselves at the same stages of our lives and itll become easier for us to understand each other and well be able to be happy together again</p>
+    <p class="copy">or maybe well be happy separately</p>
+    <p class="quote">right now that question just shouldnt be in front of us</p>
+    <p class="lead">right now you need to learn how to be happy without me</p>
+  </div></div>
+</section>
 
-    <section class="page">
-      <div class="paper">
-        <div class="content">
-          <p class="copy">sometimes i think i was even intentionally trying to hurt you a little so it would be easier for you to hate me stop waiting for me and stop wanting to come back</p>
-          <p class="copy">and no i obviously dont actually have some huge harem and im not fucking everyone around me while your photo is still hanging on my fridge</p>
-          <p class="copy">and when i said its none of your business it didnt necessarily mean the worst thing you could imagine</p>
-          <div class="note">yeah i know<br>not my proudest moment</div>
-        </div>
-      </div>
-    </section>
+<section class="page dark-page">
+  <div class="paper"><div class="content">
+    <p class="med">my love will never be enough to fill your huge cup of love</p>
+    <p class="copy" style="margin-top:30px">and your love will always be too much for just one person like me so learn to give it to yourself to your friends to what you do to the things you care about to the whole world around you</p>
+    <p class="quote">your partner should be part of your life<br>not your whole life</p>
+  </div></div>
+</section>
 
-    <section class="page dark-page">
-      <div class="float-word">maybe</div>
-      <div class="paper">
-        <div class="content">
-          <h2 class="big fade-up">maybe one day<br>maybe never</h2>
-          <p class="copy fade-up delay1">we have absolutely no idea whats going to happen next maybe in a month ill come crawling back to you or maybe well never be together again</p>
-          <p class="quote fade-up delay2">if you ever genuinely need me ill be here</p>
-        </div>
-      </div>
-    </section>
+<section class="page">
+  <div class="paper"><div class="content">
+    <div class="stack" id="stack">
+      <div class="card"><p class="lead">because of you i learned at least a little how to open up more emotionally talk about my feelings and stop hiding absolutely everything inside</p></div>
+      <div class="card"><p class="lead">because you definitely changed something in me</p><div class="micro">tap to continue</div></div>
+      <div class="card"><p class="copy">i hope that during the short time we were together i was also able to give you something good and useful that i managed to change something in your life for the better</p><div class="micro">tap to continue</div></div>
+    </div>
+  </div></div>
+</section>
 
-    <section class="page">
-      <div class="paper">
-        <div class="content">
-          <div class="pull-wrap" id="pullWrap">
-            <p class="copy">i hope that one day youll be able to forgive me for all of this and understand why i acted the way i did</p>
-            <p class="copy">im glad you came after all even though now i feel like my emotional state is about to be completely fucked ahaha</p>
-            <button class="pull-tab" id="pullTab">and about you finding someone better…</button>
-            <div class="hidden-thought">i still have this defense mechanism where i joke that youll find someone better and i think ill keep saying that for a long time even though somewhere deep inside there will obviously always be this small selfish part of me hoping you wont ahaha the part that wants to always remain someone special in your life</div>
-          </div>
-        </div>
-      </div>
-    </section>
+<section class="page">
+  <div class="paper"><div class="content">
+    <p class="lead">i guess thats all</p>
+    <p class="copy" style="margin-top:26px">for some time it really would be better if we didnt talk at all we both need to live our own lives for a while and stop emotionally coming back to each other every single day</p>
+    <div style="height:24px"></div>
+    <div class="hand">well okay you can still send me nudes)))<br><br>and expect me in your dms every 15th of the month</div>
+  </div></div>
+</section>
 
-    <section class="page">
-      <div class="paper">
-        <div class="content">
-          <div class="flip-card" id="flipCard">
-            <div class="flip-inner">
-              <div class="flip-face">
-                <p class="quote">you deserve every good thing in this world</p>
-                <div class="tap-small">tap this card</div>
-              </div>
-              <div class="flip-face flip-back">
-                <p class="lead">because i dont think anyone has ever loved me the way you do</p>
-                <p class="copy" style="margin-top:24px">now you just need to learn how to give at least some of that love to yourself</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+<section class="page">
+  <div class="paper"><div class="content">
+    <p class="copy">and there are a few more things i still want to tell you</p>
+    <p class="quote">value yourself and dont waste yourself on bullshit</p>
+    <p class="copy">i hope i managed to bring at least a little bit of my harsher culture into your life ahaha so dont completely disappear into this decaying european mentality where having 15 sexual partners is considered completely normal and doing basically nothing until youre 40 is also somehow fine because youre still figuring yourself out</p>
+  </div></div>
+</section>
 
-    <section class="page">
-      <div class="paper">
-        <div class="content">
-          <p class="copy">maybe one day well find ourselves at the same stages of our lives and itll become easier for us to understand each other and well be able to be happy together again</p>
-          <p class="copy">or maybe well be happy separately</p>
-          <p class="quote">right now that question just shouldnt be in front of us</p>
-          <p class="lead">right now you need to learn how to be happy without me</p>
-        </div>
-      </div>
-    </section>
+<section class="page dark-page">
+  <div class="ghostword">do it</div>
+  <div class="paper"><div class="content reveal">
+    <p class="med r">youre much better and stronger than you think you are</p>
+    <p class="copy r" style="margin-top:30px">stop constantly saying im just thats not for me i wont be able to handle it i cant do it</p>
+    <p class="big r" style="color:#d7bbb8">just do it</p>
+  </div></div>
+</section>
 
-    <section class="page dark-page">
-      <div class="paper">
-        <div class="content">
-          <p class="medium">my love will never be enough to fill your huge cup of love</p>
-          <p class="copy" style="margin-top:30px">and your love will always be too much for just one person like me so learn to give it to yourself to your friends to what you do to the things you care about to the whole world around you</p>
-          <p class="quote">your partner should be part of your life<br>not your whole life</p>
-        </div>
-      </div>
-    </section>
+<section class="page">
+  <div class="paper"><div class="content">
+    <p class="copy">do things make mistakes try again and youll make it</p>
+    <div class="hold-zone">
+      <button class="hold" id="holdBtn" aria-label="hold to reveal"></button>
+      <div class="micro">hold for a second</div>
+    </div>
+    <div class="hold-result" id="holdResult">
+      <p class="lead" style="margin-top:30px">love yourself<br>love your life<br>find a million other things you can love as strongly as you once loved me</p>
+    </div>
+  </div></div>
+</section>
 
-    <section class="page">
-      <div class="paper">
-        <div class="content">
-          <div class="stack" id="stack">
-            <div class="stack-card"><p class="lead">because of you i learned at least a little how to open up more emotionally talk about my feelings and stop hiding absolutely everything inside</p></div>
-            <div class="stack-card"><p class="lead">because you definitely changed something in me</p><div class="tap-small">tap to continue</div></div>
-            <div class="stack-card"><p class="copy">i hope that during the short time we were together i was also able to give you something good and useful that i managed to change something in your life for the better</p><div class="tap-small">tap to continue</div></div>
-          </div>
-        </div>
-      </div>
-    </section>
+<section class="page">
+  <div class="paper"><div class="content">
+    <h2 class="big">be happy</h2>
+    <p class="quote">and if one day you really need me youll always know where to find me</p>
+    <div class="actions">
+      <button class="paper-btn" id="closeBtn">close letter</button>
+      <button class="paper-btn primary" id="saveBtn">save whole letter</button>
+    </div>
+  </div></div>
+</section>
 
-    <section class="page">
-      <div class="paper">
-        <div class="content">
-          <p class="lead">i guess thats all</p>
-          <p class="copy" style="margin-top:26px">for some time it really would be better if we didnt talk at all we both need to live our own lives for a while and stop emotionally coming back to each other every single day</p>
-          <div style="height:26px"></div>
-          <div class="hand">
-            well okay you can still send me nudes)))<br><br>
-            and expect me in your dms every 15th of the month
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="page">
-      <div class="paper">
-        <div class="content">
-          <p class="copy">and there are a few more things i still want to tell you</p>
-          <p class="quote">value yourself and dont waste yourself on bullshit</p>
-          <p class="copy">i hope i managed to bring at least a little bit of my harsher culture into your life ahaha so dont completely disappear into this decaying european mentality where having 15 sexual partners is considered completely normal and doing basically nothing until youre 40 is also somehow fine because youre still figuring yourself out</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="page dark-page">
-      <div class="float-word">do it</div>
-      <div class="paper">
-        <div class="content reveal-lines">
-          <p class="medium line">youre much better and stronger than you think you are</p>
-          <p class="copy line" style="margin-top:30px">stop constantly saying im just thats not for me i wont be able to handle it i cant do it</p>
-          <p class="big line" style="color:#d7bbb8">just do it</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="page">
-      <div class="paper">
-        <div class="content">
-          <h2 class="big">be happy</h2>
-          <p class="lead">love yourself<br>love your life<br>find a million other things you can love as strongly as you once loved me</p>
-          <p class="quote">and if one day you really need me youll always know where to find me</p>
-          <div class="final-actions">
-            <button class="paper-btn" id="closeBtn">close letter</button>
-            <button class="paper-btn primary" id="saveBtn">save whole letter</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </div>
+</div>
 </section>
 
 <div class="swipe-tip hidden" id="swipeTip">swipe →</div>
 <div class="nav hidden" id="nav">
-  <button id="prev" aria-label="Previous">‹</button>
+  <button id="prev" aria-label="previous">‹</button>
   <div class="dots" id="dots"></div>
-  <button id="next" aria-label="Next">›</button>
+  <button id="next" aria-label="next">›</button>
 </div>
 
-<section class="closed" id="closed">
+<section class="closing" id="closing">
   <div>
     <p>youll always know<br>where to find me</p>
     <button class="dark-btn" id="again">open again</button>
@@ -451,74 +451,122 @@ color:white;opacity:0;visibility:hidden;transition:.8s}
 </section>
 
 <script>
-const intro=document.getElementById('intro'), introBtn=document.getElementById('introBtn');
-const envStage=document.getElementById('envStage'), envelope=document.getElementById('envelope');
-const story=document.getElementById('story'), track=document.getElementById('track');
-const pages=[...document.querySelectorAll('.page')], nav=document.getElementById('nav'), dots=document.getElementById('dots');
+const intro=document.getElementById('intro');
+const envStage=document.getElementById('envStage');
+const envelope=document.getElementById('envelope');
+const story=document.getElementById('story');
+const track=document.getElementById('track');
+const pages=[...document.querySelectorAll('.page')];
+const nav=document.getElementById('nav');
+const dots=document.getElementById('dots');
 const swipeTip=document.getElementById('swipeTip');
+const flying=document.getElementById('flying');
 let current=0;
 
-introBtn.onclick=()=>{
-  intro.style.transition='.6s'; intro.style.opacity='0';
-  setTimeout(()=>{intro.classList.add('hidden');envStage.classList.remove('hidden')},600)
-}
-function openEnvelope(){
+document.getElementById('introBtn').onclick=()=>{
+  intro.style.transition='opacity .6s ease,transform .6s ease';
+  intro.style.opacity='0';intro.style.transform='scale(.985)';
+  setTimeout(()=>{intro.classList.add('hidden');envStage.classList.remove('hidden')},600);
+};
+
+function launchLetter(){
   if(envelope.classList.contains('open'))return;
   envelope.classList.add('open');
-  setTimeout(()=>envStage.style.opacity='0',1300);
-  setTimeout(()=>{
-    envStage.classList.add('hidden');story.classList.remove('hidden');nav.classList.remove('hidden');swipeTip.classList.remove('hidden');
-    pages[0].classList.add('active');setTimeout(()=>swipeTip.classList.add('hidden'),3200)
-  },1900)
-}
-envelope.onclick=openEnvelope;
-envelope.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')openEnvelope()}
 
-pages.forEach((_,i)=>{let d=document.createElement('span');d.className='dot'+(i===0?' active':'');dots.appendChild(d)});
+  setTimeout(()=>{
+    const peek=envelope.querySelector('.peek').getBoundingClientRect();
+    flying.style.left=peek.left+'px';flying.style.top=peek.top+'px';
+    flying.style.width=peek.width+'px';flying.style.height=peek.height+'px';
+    flying.style.opacity='1';
+  },900);
+
+  setTimeout(()=>{
+    story.classList.remove('hidden');
+    const firstPaper=story.querySelector('.paper').getBoundingClientRect();
+    flying.classList.add('show');
+    requestAnimationFrame(()=>{
+      flying.style.left=firstPaper.left+'px';flying.style.top=firstPaper.top+'px';
+      flying.style.width=firstPaper.width+'px';flying.style.height=firstPaper.height+'px';
+      flying.style.borderRadius=getComputedStyle(story.querySelector('.paper')).borderRadius;
+    });
+    envStage.style.opacity='0';
+  },1350);
+
+  setTimeout(()=>{
+    envStage.classList.add('hidden');flying.style.opacity='0';
+    nav.classList.remove('hidden');swipeTip.classList.remove('hidden');
+    pages[0].classList.add('active');
+    setTimeout(()=>swipeTip.classList.add('hidden'),3000);
+  },2420);
+
+  setTimeout(()=>flying.remove(),2900);
+}
+envelope.onclick=launchLetter;
+envelope.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')launchLetter()};
+
+pages.forEach((_,i)=>{
+  const d=document.createElement('span');d.className='dot'+(i===0?' active':'');dots.appendChild(d);
+});
 const dotEls=[...dots.children];
 
+function setActive(i){
+  current=Math.max(0,Math.min(pages.length-1,i));
+  pages.forEach((p,j)=>p.classList.toggle('active',j===current));
+  dotEls.forEach((d,j)=>d.classList.toggle('active',j===current));
+}
 function go(i){
-  i=Math.max(0,Math.min(pages.length-1,i)); current=i;
+  i=Math.max(0,Math.min(pages.length-1,i));
   track.scrollTo({left:i*window.innerWidth,behavior:'smooth'});
   setActive(i);
-}
-function setActive(i){
-  pages.forEach((p,j)=>p.classList.toggle('active',j===i));
-  dotEls.forEach((d,j)=>d.classList.toggle('active',j===i));
 }
 document.getElementById('prev').onclick=()=>go(current-1);
 document.getElementById('next').onclick=()=>go(current+1);
 
-let scrollTimer;
+let timer;
 track.addEventListener('scroll',()=>{
-  clearTimeout(scrollTimer);
-  scrollTimer=setTimeout(()=>{
-    current=Math.round(track.scrollLeft/window.innerWidth); setActive(current)
-  },70)
+  clearTimeout(timer);
+  timer=setTimeout(()=>setActive(Math.round(track.scrollLeft/window.innerWidth)),75);
 },{passive:true});
 window.addEventListener('resize',()=>track.scrollLeft=current*window.innerWidth);
-
 document.addEventListener('keydown',e=>{
   if(story.classList.contains('hidden'))return;
   if(e.key==='ArrowRight')go(current+1);
   if(e.key==='ArrowLeft')go(current-1);
 });
 
-document.getElementById('pullTab').onclick=()=>document.getElementById('pullWrap').classList.toggle('open');
-document.getElementById('flipCard').onclick=()=>document.getElementById('flipCard').classList.toggle('flipped');
+document.getElementById('thoughtBtn').onclick=()=>document.getElementById('thoughtBox').classList.toggle('open');
+document.getElementById('flip').onclick=()=>document.getElementById('flip').classList.toggle('flipped');
 
 let stackState=0;
 document.getElementById('stack').onclick=()=>{
   const s=document.getElementById('stack');
   stackState++;
-  if(stackState===1)s.classList.add('next');
-  else if(stackState===2)s.classList.add('next2');
-  else {stackState=0;s.classList.remove('next','next2')}
+  if(stackState===1)s.classList.add('one');
+  else if(stackState===2)s.classList.add('two');
+  else{stackState=0;s.classList.remove('one','two')}
 };
 
+/* hold-to-reveal */
+const holdBtn=document.getElementById('holdBtn');
+const holdResult=document.getElementById('holdResult');
+let holdStart=0,raf=null;
+function holdTick(){
+  if(!holdStart)return;
+  const pct=Math.min(100,((performance.now()-holdStart)/950)*100);
+  holdBtn.style.setProperty('--p',pct+'%');
+  if(pct>=100){
+    holdResult.classList.add('ready');holdStart=0;holdBtn.style.setProperty('--p','100%');return;
+  }
+  raf=requestAnimationFrame(holdTick);
+}
+function startHold(e){e.preventDefault();if(holdResult.classList.contains('ready'))return;holdStart=performance.now();raf=requestAnimationFrame(holdTick)}
+function endHold(){if(!holdResult.classList.contains('ready')){holdStart=0;cancelAnimationFrame(raf);holdBtn.style.setProperty('--p','0%')}}
+['pointerdown','touchstart'].forEach(ev=>holdBtn.addEventListener(ev,startHold,{passive:false}));
+['pointerup','pointerleave','pointercancel','touchend'].forEach(ev=>holdBtn.addEventListener(ev,endHold));
+
 document.getElementById('saveBtn').onclick=()=>window.print();
-document.getElementById('closeBtn').onclick=()=>document.getElementById('closed').classList.add('show');
-document.getElementById('again').onclick=()=>{document.getElementById('closed').classList.remove('show');go(0)};
+document.getElementById('closeBtn').onclick=()=>document.getElementById('closing').classList.add('show');
+document.getElementById('again').onclick=()=>{document.getElementById('closing').classList.remove('show');go(0)};
 </script>
 </body>
 </html>
